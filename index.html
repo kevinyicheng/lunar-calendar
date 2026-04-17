@@ -164,14 +164,25 @@
     const sd = now.getDate();
     const dow = now.getDay();
 
-    // ── 農曆（瀏覽器內建 Intl，不需任何套件）──
+    // ── 農曆（用 numeric 避免部分瀏覽器回傳 M01 問題）──
+    const LUNAR_MONTHS = ['正月','二月','三月','四月','五月','六月',
+                          '七月','八月','九月','十月','冬月','臘月'];
+    const LUNAR_DAYS   = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
+                          '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
+                          '廿一','廿二','廿三','廿四','廿五','廿六','廿七','廿八','廿九','三十'];
     const fmt = new Intl.DateTimeFormat('zh-TW-u-ca-chinese', {
-      month: 'long',
+      month: 'numeric',
       day:   'numeric'
     });
     const parts = fmt.formatToParts(now);
-    const lunarMonth = parts.find(p => p.type === 'month')?.value ?? '';
-    const lunarDay   = parts.find(p => p.type === 'day')?.value   ?? '';
+    const monthRaw = parts.find(p => p.type === 'month')?.value ?? '1';
+    const dayRaw   = parts.find(p => p.type === 'day')?.value   ?? '1';
+    // 處理 "M01"、"閏M04"、"1" 等各種格式，只取數字部分
+    const monthNum = parseInt(monthRaw.replace(/\D/g, ''), 10) || 1;
+    const dayNum   = parseInt(dayRaw.replace(/\D/g, ''), 10)   || 1;
+    const isLeap   = /閏|leap/i.test(monthRaw);
+    const lunarMonth = (isLeap ? '閏' : '') + (LUNAR_MONTHS[monthNum - 1] ?? monthNum + '月');
+    const lunarDay   = LUNAR_DAYS[dayNum - 1] ?? dayNum + '日';
 
     // ── 天干地支年（以1984甲子為基準，農曆年以立春前後切換）──
     // 立春通常在2/3~2/5；用2/4作近似切換點
