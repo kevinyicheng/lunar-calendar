@@ -1,0 +1,17 @@
+{
+  "name": "農民曆",
+  "short_name": "農民曆",
+  "description": "農曆日期、天干地支、節氣",
+  "start_url": "/lunar-calendar/",
+  "display": "standalone",
+  "background_color": "#1a0000",
+  "theme_color": "#1a0000",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

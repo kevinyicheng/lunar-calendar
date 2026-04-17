@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#1a0000" rx="80"/>
+  <rect x="8" y="8" width="496" height="496" fill="none" stroke="#FFD700" stroke-width="16" rx="74"/>
+  <text x="256" y="390" font-size="360" text-anchor="middle" fill="#FFD700" font-family="serif">農</text>
+</svg>
