@@ -4,12 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>農民曆</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon.svg" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta name="apple-mobile-web-app-title" content="農民曆" />
-  <meta name="theme-color" content="#1a0000" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -59,6 +53,15 @@
       margin-top: 14px;
       letter-spacing: 3px;
       min-height: 40px;
+      text-align: center;
+    }
+
+    /* 訪客計數 */
+    .visit-counter {
+      font-size: clamp(12px, 3vw, 16px);
+      color: rgba(255, 215, 0, 0.45);
+      letter-spacing: 2px;
+      margin-top: 12px;
       text-align: center;
     }
 
@@ -132,6 +135,7 @@
   </div>
 
   <div class="border-line"></div>
+  <div class="visit-counter" id="visitCounter">．．．</div>
 
 <script>
   const STEMS   = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
@@ -210,6 +214,17 @@
     document.getElementById('weekday').textContent    = `星期${WEEKDAYS[dow]}`;
     document.getElementById('solarTerm').textContent  = solarTerm ? `◆ 今日節氣：${solarTerm} ◆` : '';
   }
+
+  // 訪客計數
+  fetch('https://api.counterapi.dev/v1/kevinyicheng/lunar-calendar/up')
+    .then(r => r.json())
+    .then(data => {
+      const n = (data.count ?? 0).toLocaleString('zh-TW');
+      document.getElementById('visitCounter').textContent = `已累計 ${n} 次造訪`;
+    })
+    .catch(() => {
+      document.getElementById('visitCounter').textContent = '';
+    });
 
   // 立即執行
   update();
